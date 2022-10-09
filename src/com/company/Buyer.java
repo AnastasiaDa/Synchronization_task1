@@ -18,7 +18,7 @@ public class Buyer extends Thread {
         for (int i = 0; i < 10; i++) {
             synchronized (carList) {
                 System.out.println("The " + Thread.currentThread().getName() + " has entered the car dealership");
-                if (carList.isEmpty()) {
+                while (carList.isEmpty()) {
                     System.out.println("There are no cars");
                     try {
                         carList.wait();
@@ -27,11 +27,8 @@ public class Buyer extends Thread {
                     }
                 }
                 System.out.println("The buyer " + Thread.currentThread().getName() + " has driven away in a new car");
-                try {
-                    carList.remove(0);
-                } catch (IndexOutOfBoundsException ex) {
-//выдает ошибку, на одной машине уезжают сразу 2 покупателя. Не знаю как исправить
-                }
+                carList.remove(0);
+
                 try {
                     Thread.sleep(time);
                 } catch (InterruptedException e) {
